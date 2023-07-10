@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { useSearchParams } from "react-router-dom";
 
 const AuthForm = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [searchParams] = useSearchParams();
   const isLoginMode = searchParams.get("mode") === "login";
 
@@ -11,7 +13,7 @@ const AuthForm = () => {
       <h1 className="text-center font-bold text-2xl mb-4">
         {isLoginMode ? "Login" : "Register"} Form
       </h1>
-      <form>
+      <form method="post" onSubmit={formActionHandler}>
         <div className="mb-4">
           <label htmlFor="username" className="font-medium">
             Enter username
@@ -19,6 +21,10 @@ const AuthForm = () => {
           <input
             type="text"
             name="username"
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
             id="username"
             className="block border border-black text-lg p-2 w-full"
             required
@@ -32,6 +38,10 @@ const AuthForm = () => {
           <input
             type="password"
             name="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
             id="password"
             className="block border border-black text-lg p-2 w-full"
             required
