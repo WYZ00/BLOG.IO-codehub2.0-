@@ -1,12 +1,39 @@
 import React, { useState } from "react";
 
-import { useSearchParams } from "react-router-dom";
+import { redirect, useSearchParams } from "react-router-dom";
 
 const AuthForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [searchParams] = useSearchParams();
   const isLoginMode = searchParams.get("mode") === "login";
+
+  const login = () => {};
+
+  const register = async () => {
+    const response = await fetch(`${import.meta.env.VITE_URL}/register`, {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      redirect("/auth?mode=login");
+    } else {
+      alert("registration failed");
+    }
+  };
+
+  const formActionHandler = (e) => {
+    e.preventDefault();
+
+    if (isLoginMode) {
+      login();
+    } else {
+      register();
+    }
+  };
 
   return (
     <section className="w-1/2 mx-auto">
